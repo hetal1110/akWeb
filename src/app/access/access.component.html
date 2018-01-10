@@ -1,0 +1,81 @@
+<section class="box">
+<header class="p_headercenter">
+    <h2 class="title pull-left">Access</h2>
+</header>
+<div class="content-body">
+<p-growl [(value)]="msgs"></p-growl>
+
+<button class="ui-button-info" icon="fa-plus" pButton label="Add Role" (click)="onAdd()"></button>
+
+
+<ag-grid-angular #agGrid style="width: 100%; height: 500px;"
+                 class="ag-theme-material"
+                 [columnDefs] = "columnDefs"
+                 [gridOptions] ="gridOptions"                 
+                 enableColResize
+                 enableFilter
+                 enableSorting
+                 rowHeight="50"
+                 >
+</ag-grid-angular>
+
+
+<form [formGroup]="accessForm" (ngSubmit)="onSubmit()">
+  
+<p-dialog header="{{ headerTitle }}" [(visible)]="displayDialog" [responsive]="true" modal="modal" showEffect="fade" [contentStyle]="{'overflow':'visible'}" [width]="650" [closable]="true" >
+      <div formGroupName="accessData">
+        <div class="row">
+        <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group">
+          <label class="form-label" for="IcardId">ID Card</label><span class="mandatory">*</span>
+          <input type="text" id="IcardId" class="form-control" formControlName="IcardId" (blur)="onIcardIdBlur($event.target.value)" [readonly]="editMode">
+          <span *ngIf="!accessForm.get('accessData.IcardId').valid && accessForm.get('accessData.IcardId').touched" class="help-block">
+            <span *ngIf="accessForm.get('accessData.IcardId').errors['required']">
+              Icard Id is required!
+            </span>
+            <span *ngIf="accessForm.get('accessData.IcardId').errors['pattern']">
+              Please Enter Valid Icard Id!  
+            </span>                                            
+          </span>            
+          </div>
+        </div>
+        <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group">
+          <label class="form-label" for="roleName">Role</label><span class="mandatory">*</span>
+          <p-dropdown [options]="completerData" formControlName="roleName" [filter]="true" filterBy="label" (onChange)="onRoleSelected($event)" [style]="{'width':'270px'}" [required]="true" placeholder="-- Select Role --" filterPlaceholder="-- Select Role --">
+
+          </p-dropdown>
+          <span *ngIf="(!accessForm.get('accessData.roleName').valid) && accessForm.get('accessData.roleName').touched" class="help-block">
+            <span *ngIf="accessForm.get('accessData.roleName').errors['required']">
+              Role is to be selected!
+            </span>
+          </span>
+          </div>
+        </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div>
+              {{ fullName }} <br>
+              {{ city }} <br>
+              {{ center }} <br>
+              {{ subCenter }} <br>
+            </div>
+          </div>
+        </div>
+        <br/><br/><br/><br/><br/><br/>
+      </div>
+      <p-footer>
+      <div class="row">
+        <div class="col-xs-12">
+          <button type="button" class="ui-button-info" pButton type="submit" icon="fa-check" label="Save" [disabled]="!accessForm.valid"></button>
+          <button type="button" class="ui-button-info" pButton type="button" icon="fa-close" label="Cancel" (click)="onCancel()"></button>
+        </div>
+      </div>
+      </p-footer>
+    
+</p-dialog>
+</form>
+
+
+</div></section>

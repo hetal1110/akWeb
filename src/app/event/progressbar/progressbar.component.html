@@ -1,0 +1,45 @@
+<!--<p-steps [model]="items" [(activeIndex)]="activeIndex" [readonly]="false" styleClass="steps-custom"></p-steps>-->
+
+<div class="steps-custom ui-steps ui-widget ui-helper-clearfix">
+    <ul class="tablist">
+        <li class="ui-steps-item" [ngClass]="(activeIndex==0)?'ui-steps-item ui-state-high-light':'ui-steps-item ui-state-default'"
+>
+            <a class="ui-menuitem-link" (click)="setUrl('addParams')">
+                <span class="ui-steps-number">
+                    <img src="assets/Images/event-parameters.png" alt="Event Parameters" title="Event Parameters" >
+                </span>
+                <span class="ui-steps-title">Event Parameters</span>
+            </a>
+        </li>
+
+        <li class="ui-steps-item" [ngClass]="(activeIndex==1)?'ui-steps-item ui-state-high-light':'ui-steps-item ui-state-default'"
+>
+            <a class="ui-menuitem-link" (click)="setUrl('addInvitees')">
+                <span class="ui-steps-number">
+                    <img src="assets/Images/add-users.png" alt="Add Users" title="Add Users">
+                </span>
+                <span class="ui-steps-title">Invite Members</span>
+            </a>
+        </li>
+
+        <li class="ui-steps-item" [ngClass]="(activeIndex==2)?'ui-steps-item ui-state-high-light':'ui-steps-item ui-state-default'"
+>
+            <a class="ui-menuitem-link" (click)="setUrl('cancelCharges')">
+                <span class="ui-steps-number">
+                    <img src="assets/Images/cancellation-charges.png" alt="Cancellation Charges" title="Cancellation Charges">
+                </span>
+                <span class="ui-steps-title">Cancellation Charges</span>
+            </a>
+        </li>
+
+        <li class="ui-steps-item" [ngClass]="(activeIndex==3)?'ui-steps-item ui-state-high-light':'ui-steps-item ui-state-default'"
+>
+            <a class="ui-menuitem-link" (click)="setUrl('addCoord')">
+                <span class="ui-steps-number">
+                    <img src="assets/Images/event-coordinators.png" alt="Event-CoOrdinators" title="Event-CoOrdinators">
+                </span>
+                <span class="ui-steps-title">Event Co-Ordinators</span>
+            </a>
+        </li>
+    </ul>
+</div>

@@ -1,0 +1,50 @@
+<div class="login-logo">
+
+        
+        <p-growl [(value)]="msgs"></p-growl>
+        <br>
+        <div><img src="assets/Images/login-logo.png" width="300" height="169" /></div>
+        <div class="login-form">
+            <!--<h1 class="text-center login-title">Log In</h1>
+            <br>-->
+            
+            <div class="account-wall">
+                <form [formGroup]="otpForm" (ngSubmit)="onSubmit()">
+                  <div formGroupName="otpData">
+                  <div class="otp-select">
+                    <div class="form-group">
+                      <p-dropdown [options]="Modules" formControlName="selectedModule" (onChange)="onModuleSelected($event)" [style]="{'height':'35px','width':'350px'}">
+                          <ng-template let-mod pTemplate="item">
+                              <div class="ui-helper-clearfix" style="position: relative;height: 50px;">
+                                  {{ mod.label }} <br>
+                                  <small>{{ mod.value.desc }}</small>
+                              </div>
+                          </ng-template>
+                      </p-dropdown>
+                    </div>
+                  </div>
+                  <div class="otp-select">
+                      <div class="form-group">
+                    <input type="number" id="VerificationCode" formControlName="VerificationCode" placeholder="6 Digit OTP" ng-maxlength="6" required autofocus>
+                    <span *ngIf="!otpForm.get('otpData.VerificationCode').valid && otpForm.get('otpData.VerificationCode').touched" class="help-block-login">
+                      <span *ngIf="otpForm.get('otpData.VerificationCode').errors['required']">
+                        OTP is required!
+                      </span>
+                      <span *ngIf="otpForm.get('otpData.VerificationCode').errors['pattern']">
+                        6 digit OTP required!  
+                      </span>                                            
+                    </span>
+                  </div>
+                    <div class="text-center"><i>Enter the OTP sent on your registered <br>Mobile Number / Email Address</i></div>
+                    <br>
+                  <div class="col-lg-12 text-center">     
+                    <button class="btn btn-primary" type="submit" [disabled]="!otpForm.valid">
+                    Verify OTP</button>
+                  </div>
+                  </div>
+                  </div>
+                </form>
+            
+        </div>
+        </div>
+  </div>

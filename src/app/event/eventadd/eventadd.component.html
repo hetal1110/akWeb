@@ -1,0 +1,337 @@
+<section class="box">
+  <div class="btn-position">
+    <button class="ui-back" alt="back" title="back" icon="fa-arrow-left"  pButton  (click)="redirecTo()"></button>
+  </div>
+<header class="p_headercenter">
+  <h2 *ngIf="!editMode" class="title pull-left">Add Event</h2>
+  <h2 *ngIf="editMode" class="title pull-left">Edit Event</h2>
+</header>
+
+<div class="content-body" #con>
+ 
+<!--Message-->
+<p-growl [(value)]="msgs"></p-growl>
+
+
+<form [formGroup]="evForm" (ngSubmit)="onSubmit(evForm.value, con)">
+  <div class="row">
+    <!--Event Name-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label class="form-label" for="Eventname">Event Name</label><span class="mandatory">*</span>
+          <input type="text" class="form-control" formControlName="Eventname">
+          <span class="help-block" *ngIf="!evForm.controls['Eventname'].valid && evForm.controls['Eventname'].touched" >Please fill out this field</span>
+        </div>
+        
+    </div>
+    <!--Event Alias-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="EventAlias">Event Alias</label><span class="mandatory">*</span>
+        <input type="text" class="form-control" formControlName="EventAlias">
+        <span class="help-block" *ngIf="!evForm.controls['EventAlias'].valid && evForm.controls['EventAlias'].touched" >Please fill out this field</span>
+      </div>
+      
+    </div>
+  </div>
+  <div class="row">
+
+    <!--Event Name Gujarati-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+          <label class="form-label" for="EventNameGuj">Event Name Gujarati</label>
+          <textarea formControlName="EventNameGuj" id="EventNameGuj" class="form-control" rows="1">
+          </textarea>
+        </div>
+    </div>
+
+      <!--Event City-->
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12" #eventCity>
+      <div class="form-group">
+        <label class="form-label" for="CityId">Event City</label><span class="mandatory">*</span>
+        <p-autoComplete formControlName="CityId" [suggestions]="arrCity" (completeMethod)="fetchCity($event)" field="name" [size]="50"  [minLength]="3" placeholder="Type text to search (min 3 chars)" ></p-autoComplete>
+        <span class="help-block" *ngIf="!evForm.controls['CityId'].valid && evForm.controls['CityId'].touched">Please fill out this field</span>
+      </div>   
+    </div>
+
+  </div>
+  <div class="row">
+    <!--Event Type-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+          <label class="form-label" for="EventType">Event Type</label><span class="mandatory">*</span>
+          <p-dropdown [options]="evType" formControlName="EventType" filterPlaceholder="Event Type" filter="filter" ></p-dropdown>
+           <span class="help-block" *ngIf="(!evForm.controls['EventType'].valid && evForm.controls['EventType'].touched) || (evForm.controls['EventType'].touched && evForm.controls['EventType'].value.id == 'none')" >Please fill out this field</span>
+        </div>   
+    </div>
+    <!--Event Status-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="EventStatus">Event Status</label><span class="mandatory">*</span>
+        <p-dropdown [options]="eventStatus" formControlName="EventStatus" filterPlaceholder="Event Status" filter="filter" ></p-dropdown>
+        <span class="help-block" *ngIf="(!evForm.controls['EventStatus'].valid && evForm.controls['EventStatus'].touched) || (evForm.controls['EventStatus'].touched && evForm.controls['EventStatus'].value.id == 'none')" >Please fill out this field</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--GEO Location-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label class="form-label" for="GeoLocation">GEO Location</label>
+          <textarea formControlName="GeoLocation" id="GeoLocation" class="form-control" rows="1">
+          </textarea>
+        </div>
+    </div>
+    <!--Gender-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="ForGender">Gender</label>
+        <p-dropdown [options]="gender" formControlName="ForGender" filterPlaceholder="Gender" filter="filter"></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Minimum Age-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label class="form-label" for="MinRegistrantAge">Minimum Age</label>
+          <input type="number" id="MinRegistrantAge" class="form-control" min="0" formControlName="MinRegistrantAge" [(ngModel)]="MinRegistrantAge">
+        </div>
+    </div>
+    <!--Maximum Age-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="MaxRegistrantAge">Maximum Age</label>
+        <input type="number" id="MaxRegistrantAge" class="form-control" min="0" formControlName="MaxRegistrantAge">
+           <span class="help-block" *ngIf="evForm.get('MaxRegistrantAge').errors">Maximum Age can not be less than Minimum Age.</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Event Start Date-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="Eventstartdate">Event Start Date</label><span class="mandatory">*</span>
+        <p-calendar formControlName="Eventstartdate" [(ngModel)]="Eventstartdate" [utc]="true" [showIcon]="true"  dateFormat="dd/mm/yy"></p-calendar>
+        <span class="help-block" *ngIf="!evForm.controls['Eventstartdate'].valid && evForm.controls['Eventstartdate'].touched">Please fill out this field</span>
+      </div>
+    </div>
+    <!--Event End Date-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="Eventenddate">Event End Date</label><span class="mandatory">*</span>
+        <p-calendar formControlName="Eventenddate" [minDate]="Eventstartdate" [utc]="true" [showIcon]="true"  dateFormat="dd/mm/yy" [(ngModel)]="Eventenddate"></p-calendar>
+        <!--<span class="help-block" *ngIf="!evForm.controls['Eventenddate'].valid && evForm.controls['Eventenddate'].touched" >Please fill out this field</span>-->
+        <span class="help-block" *ngIf="evForm.get('Eventenddate').errors && evForm.controls['Eventenddate'].touched">Required (Event End Date should be greater than Event Start Date)</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Registration Start Date-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label class="form-label" for="RegistrationStartDate">Registration Start Date</label><span class="mandatory">*</span>
+          <p-calendar formControlName="RegistrationStartDate" [maxDate]="Eventstartdate" [(ngModel)]="RegistrationStartDate" [utc]="true" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+          <!--<span class="help-block" *ngIf="evForm.get('RegistrationStartDate').errors.required">Please fill out this field</span>-->
+          <span class="help-block" *ngIf="evForm.get('RegistrationStartDate').errors && evForm.controls['RegistrationStartDate'].touched">Required (Registration Start Date should be less than Event Start Date)</span>
+      </div>
+    </div>
+    <!--Registration End Date-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="RegistrationEndDate">Registration End Date</label><span class="mandatory">*</span>
+        <p-calendar formControlName="RegistrationEndDate" [minDate]="RegistrationStartDate" [utc]="true" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+        <!--<span class="help-block" *ngIf="!evForm.controls['RegistrationEndDate'].valid && evForm.controls['RegistrationEndDate'].touched" >Please fill out this field</span>-->
+        <span class="help-block" *ngIf="evForm.get('RegistrationEndDate').errors && evForm.controls['RegistrationEndDate'].touched">Required (Registration End Date should be greater than Registration Start Date)</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Confirmation Start Date-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label class="form-label" for="ConfirmationReminderdate">Confirmation Start Date</label><span class="mandatory">*</span>
+          <p-calendar formControlName="ConfirmationReminderdate" [maxDate]="Eventstartdate" [(ngModel)]="ConfirmationReminderdate" [utc]="true" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+          <!--<span class="help-block" *ngIf="!evForm.controls['ConfirmationReminderdate'].valid && evForm.controls['ConfirmationReminderdate'].touched" >Please fill out this field</span>-->
+          <span class="help-block" *ngIf="evForm.get('ConfirmationReminderdate').errors && evForm.controls['ConfirmationReminderdate'].touched">Required (Confirmation Start Date should be less than Event Start Date)</span>
+        </div>  
+    </div>
+    <!--Confirmation End Date-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="ConfirmationEndDate">Confirmation End Date</label><span class="mandatory">*</span>
+        <p-calendar formControlName="ConfirmationEndDate" [minDate]="ConfirmationReminderdate" [utc]="true" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+        <!--<span class="help-block" *ngIf="!evForm.controls['ConfirmationEndDate'].valid && evForm.controls['ConfirmationEndDate'].touched" >Please fill out this field</span>-->
+         <span class="help-block" *ngIf="evForm.get('ConfirmationEndDate').errors && evForm.controls['ConfirmationEndDate'].touched">Required (Confirmation End Date should be greater than Confirmation Start Date)</span>
+      </div>   
+    </div>
+  </div>
+  <div class="row">
+    <!--Cancellation End Date-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="CancellationEndDate">Cancellation End Date</label><span class="mandatory">*</span>
+        <p-calendar formControlName="CancellationEndDate" [maxDate]="Eventstartdate" [utc]="true" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+        <!--<span class="help-block" *ngIf="!evForm.controls['CancellationEndDate'].valid && evForm.controls['CancellationEndDate'].touched" >Please fill out this field</span>-->
+        <span class="help-block" *ngIf="evForm.get('CancellationEndDate').errors && evForm.controls['CancellationEndDate'].touched">Required (Cancellation End Date should be less than Event Start Date)</span>
+      </div>
+    </div>
+    <!--Event Offline Date-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="EventOfflineDate">Event Offline Date</label><span class="mandatory">*</span>
+        <p-calendar formControlName="EventOfflineDate" [utc]="true" [minDate]="Eventenddate" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+        <!--<span class="help-block" *ngIf="!evForm.controls['EventOfflineDate'].valid && evForm.controls['EventOfflineDate'].touched" >Please fill out this field</span>-->
+         <span class="help-block" *ngIf="evForm.get('EventOfflineDate').errors && evForm.controls['EventOfflineDate'].touched">Required (Event Offline Date should  be greater than Event End Date)</span>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Event Currency-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="Currency">Event Currency</label><span class="mandatory">*</span>
+        <p-dropdown [options]="evCurrency" formControlName="Currency" filterPlaceholder="Currency" filter="filter"></p-dropdown>
+        <span class="help-block" *ngIf="(!evForm.controls['Currency'].valid && evForm.controls['Currency'].touched) || ( evForm.controls['Currency'].touched && evForm.controls['Currency'].value.id == 'none')" >Please fill out this field</span>
+      </div>
+    </div>
+    <!--Event For Center-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+        <label class="form-label" for="ForCenter">For Center</label>
+        <p-dropdown [options]="evCenter" formControlName="ForCenter" filterPlaceholder="Event Center" filter="filter"></p-dropdown>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Event For-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" class="form-label" for="eventFor">Event For </label>
+        <p-dropdown formControlName="eventFor" [options]="eventForVal" (onChange)="onChange()" filterPlaceholder="Event For"></p-dropdown>
+      </div>
+    </div>
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label >&nbsp;&nbsp;&nbsp;</label>
+    <p-autoComplete formControlName="eventForId" [suggestions]="arrAutoCompleteData" (completeMethod)="getEventFor($event, evForm.value)" field="name" [size]="50" placeholder="Type text to search City/State/Country (min 3 chars)" [minLength]="3"></p-autoComplete>
+
+        <!--set hidden values-->
+        <input type="hidden" formControlName="ForCountry" name="ForCountry" value="-1">
+        <input type="hidden" formControlName="ForState" name="ForState" value="-1">
+        <input type="hidden" formControlName="ForCity" name="ForCity" value="-1">
+        <input type="hidden" formControlName="Eventid" name="Eventid" value="{{id}}">
+
+  </div>
+    </div>
+  </div>
+  <div class="row">
+    <!-- Invite Only? -->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+          <p-checkbox class="form-label" formControlName="InviteOnly" label="Invite Only?" binary="true"></p-checkbox>
+      </div>
+    </div>
+    <!-- Allow Partial Days ?-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <p-checkbox class="form-label" formControlName="AllowPartialDays" label="Allow Partial Days?" binary="true"></p-checkbox>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Is Full Payment ? -->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+          <p-checkbox class="form-label" formControlName="IsFullPaymentRequired" label="Is Full Payment Required?" binary="true"></p-checkbox>
+      </div>
+    </div>
+    <!--Is Deposit ?-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <p-checkbox class="form-label" formControlName="IsDepositRequired" label="Is Deposit Required?" binary="true"></p-checkbox>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Event Start HelpText-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+        <label class="form-label" for="EventStartHelpText">Event Start HelpText</label>
+        <p-editor formControlName="EventStartHelpText" [style]="{'height':'320px'}"></p-editor>
+      </div>
+    </div>
+    <!--Event End HelpText-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+        <label class="form-label" for="EventEndHelpText">Event End HelpText</label>
+          <p-editor formControlName="EventEndHelpText" [style]="{'height':'320px'}"></p-editor>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <!--Location-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+        <label class="form-label" for="Location">Location</label>
+        <textarea formControlName="Location" id="Location" class="form-control" rows="1">
+        </textarea>
+      </div>
+    </div>
+    <!--Remarks-->
+    <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+      <div class="form-group">
+          <label class="form-label" for="Remarks">Remarks</label>
+          <textarea formControlName="Remarks" id="Remarks" class="form-control" rows="1">
+          </textarea>
+        </div>
+    </div>
+  </div>
+    <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group mba">
+        <h2 for="AttendanceStartDate">MBA Related fields</h2>
+      </div>
+    </div>
+    </div>
+    <div class="row">
+      <!--Attendance Start Date-->
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label class="form-label" for="AttendanceStartDate">Attendance Start Date</label>
+          <p-calendar formControlName="AttendanceStartDate" [utc]="true" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+        </div>
+      </div>
+      <!--Attendance End Date-->
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label class="form-label" for="AttendanceEndDate">Attendance End Date</label>
+          <p-calendar formControlName="AttendanceEndDate" [utc]="true" [showIcon]="true" dateFormat="dd/mm/yy"></p-calendar>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!--Activitye-->
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label class="form-label" for="Activity">Activity</label>
+          <p-dropdown [options]="activity" formControlName="Activity" filterPlaceholder="Select Activity" filter="filter"></p-dropdown>
+        </div>
+      </div>  
+    </div>
+    <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group">
+        <button class="ui-button-info"  icon="fa-check" pButton label="Save" type="submit" 
+          [disabled]="(evForm.invalid || evForm.controls['EventType'].value.id == 'none' ||
+          evForm.controls['EventStatus'].value.id == 'none' || evForm.controls['Currency'].value.id == 'none'  || isObject(evForm.controls['CityId']))"></button>&nbsp;&nbsp;
+        <button class="ui-button-info"  icon="fa-close" pButton label="Cancel" (click)="redirecTo();"></button>
+      </div>
+    </div>
+  </div>
+</form>
+
+</div>
+<!--[disabled]="!f.valid"-->
+</section>
+

@@ -1,0 +1,390 @@
+<!-- progressbar -->
+<app-progressbar></app-progressbar>
+
+<section class="box">
+       <div class="btn-position">
+            <button class="ui-back" alt="back" title="back" icon="fa-arrow-left" pButton  (click)="redirecTo()"></button>
+        </div>
+<header class="p_headercenter">
+    <h2 class="title pull-left">Event Parameters : {{eventName}}</h2>
+</header>
+<div class="content-body">
+
+<!--Message-->
+<p-growl [value]="msgs"></p-growl>
+
+
+
+<!--confirm Dialog-->
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+
+<!--Overlay Form for Add Event Parameters-->
+<p-dialog header="Add Event Parameters" [(visible)]="display" [closable]="true" modal="modal" [responsive]="true" [width]="800" [contentStyle]="{'overflow':'visible'}">
+
+    <form [formGroup]="evForm" name="evForm">
+        
+        <div class="row">
+            <!--Param Name-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="ParamName">Param Name</label><span class="mandatory">*</span>
+                    <input type="text" class="form-control" formControlName="ParamName">
+                    <span class="help-block" *ngIf="!evForm.controls['ParamName'].valid && evForm.controls['ParamName'].touched" >Please fill out this field</span>
+                <input type="hidden" formControlName="EventId" name="EventId" value="{{EventId}}">
+                 <input type="hidden" class="form-control" formControlName="TabNo" value="{{TabNo}}">
+                <input type="hidden" formControlName="EventParametersSrNo" name="EventParametersSrNo" value="{{EventParametersSrNo}}">
+                </div>
+            </div>
+            <!--Param Display Name-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="ParamDisplayName">Param Display Name</label><span class="mandatory">*</span>
+                    <input type="text" class="form-control" formControlName="ParamDisplayName">
+                    <span class="help-block" *ngIf="!evForm.controls['ParamDisplayName'].valid && evForm.controls['ParamDisplayName'].touched" >Please fill out this field</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!--GroupName-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="GroupName">Group Name </label><span class="mandatory">*</span>
+                    <input type="text" class="form-control" formControlName="GroupName">
+                     <span class="help-block" *ngIf="!evForm.controls['GroupName'].valid && evForm.controls['GroupName'].touched" >Please fill out this field</span>
+                </div>
+            </div>
+            <!--Editor-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="Editor">Editor</label><span class="mandatory">*</span>
+                    <p-dropdown [options]="editorVal" [style]="{'width':'250px'}" formControlName="Editor" filterPlaceholder="Select Editor" filter="filter"></p-dropdown>
+                    <span class="help-block" *ngIf="(!evForm.controls['Editor'].valid && evForm.controls['Editor'].touched) || (evForm.controls['Editor'].touched && evForm.controls['Editor'].value.id == 'none')" >Please fill out this field</span>
+                </div>
+            </div>
+        </div>
+
+         <div class="row">
+            <!--ParamOrder-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="ParamOrder">Param Order</label><span class="mandatory">*</span>
+                    <input type="number" class="form-control" formControlName="ParamOrder" min="0">
+                    <span class="help-block" *ngIf="!evForm.controls['ParamOrder'].valid && evForm.controls['ParamOrder'].touched" >Please fill out this field</span>
+                </div>
+            </div>
+            <!--ParamHelpText-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="ParamHelpText">Param Help Text</label>
+                    <textarea formControlName="ParamHelpText" id="ParamHelpText" class="form-control" rows="1">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+
+         <!--<div class="row">
+            <div class="col-xs-3">
+                <div class="form-group">
+                    <label for="TabNo">Tab No</label><span class="mandatory">*</span>
+                    <input type="text" class="form-control" formControlName="TabNo">
+                </div>
+                <span class="help-block" *ngIf="!evForm.controls['TabNo'].valid && evForm.controls['TabNo'].touched" >Please fill out this field</span>
+            </div>
+        </div>-->
+
+        <div class="row">
+            <!-- Chargeable -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="Chargeable" label="Is Chargeable?" binary="true"></p-checkbox>
+                </div>
+            </div>
+            <!-- IsDaily -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="IsDaily" label="Is Daily?" binary="true"></p-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- IsCancellable -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="Cancellable" label="Is Cancellable?" binary="true"></p-checkbox>
+                </div>
+            </div>
+            <!-- Is Locked -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="IsLocked" label="Is Locked?" binary="true"></p-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Is Active -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="IsActive" label="Is Active?" binary="true"></p-checkbox>
+                </div>
+            </div>
+            <!-- Is Mandatory -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="IsMandatory" label="Is Mandatory?" binary="true"></p-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Show in Option -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="ShowInOptions" label="Show in Option?" binary="true"></p-checkbox>
+                </div>
+            </div>
+            <!-- Show in Summary -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="ShowInSummary" label="Show in Summary?" binary="true"></p-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!--Show Option Until Date-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                <label class="form-label" for="ShowOptionUntilDate">Show Option Until Date</label>
+                <p-calendar formControlName="ShowOptionUntilDate" [utc]="true" [showIcon]="true"  dateFormat="dd/mm/yy"></p-calendar>
+                </div>
+            </div>
+        </div>
+    </form>
+
+        <p-footer>
+            <button type="button" class="ui-button-info" pButton icon="fa-check" (click)="onAddEventParameter(evForm.value)" 
+            
+            [disabled]="(evForm.invalid || evForm.controls['Editor'].value.id == 'none')" 
+            
+            label="Save"
+            *ngIf="EventStatus"></button>
+            <button type="button" class="ui-button-info" pButton icon="fa-close" (click)="cancelParams();" label="Cancel"></button>
+         </p-footer>
+</p-dialog>
+
+<!--Overlay Form for Add Event Parameters-->
+<p-dialog header="Add Event Parameters Options" [(visible)]="displayOption" [closable]="true" modal="modal" [width]="800" [responsive]="true" [contentStyle]="{'overflow':'visible'}">
+
+    <form [formGroup]="evFormOptions" name="evFormOptions">
+        
+        <div class="row">
+            <!--Option Name-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="OptionName">Option Name</label><span class="mandatory">*</span>
+                    <input type="text" class="form-control" formControlName="OptionName">
+                    <span class="help-block" *ngIf="!evFormOptions.controls['OptionName'].valid && evFormOptions.controls['OptionName'].touched" >Please fill out this field</span>
+                <input type="hidden" formControlName="EventId" name="EventId" value="{{EventId}}">
+                <input type="hidden" formControlName="EventParametersSrNo" name="EventParametersSrNo" value="0">
+                 <input type="hidden" formControlName="SrNo" name="SrNo" value="0">
+                </div>
+                
+            </div>
+            <!--Option Value-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="OptionValue">Option Value</label><span class="mandatory">*</span>
+                    <input type="text" class="form-control" formControlName="OptionValue">
+                    <span class="help-block" *ngIf="!evFormOptions.controls['OptionValue'].valid && evFormOptions.controls['OptionValue'].touched" >Please fill out this field</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!--Option Order-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="OptionOrder">Option Order </label><span class="mandatory">*</span>
+                    <input type="number" class="form-control" formControlName="OptionOrder" min="0">
+                    <span class="help-block" *ngIf="!evFormOptions.controls['OptionOrder'].valid && evFormOptions.controls['OptionOrder'].touched" >Please fill out this field</span>
+                </div>
+            </div>
+            <!--Rate-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="Rate">Rate</label>
+                    <input type="number" class="form-control" formControlName="Rate" min="0">
+                </div>
+            </div>
+        </div>
+
+         <div class="row">
+            <!--Deposit Rate-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="DepositRate">Deposit Rate</label>
+                    <input type="number" class="form-control" formControlName="DepositRate" min="0">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- IsActive -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="IsActive" label="Is Active?" binary="true"></p-checkbox>
+                </div>
+            </div>
+            <!-- IsDefault -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="IsDefault" label="Is Default?" binary="true"></p-checkbox>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Apply Cancellation charge -->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox class="form-label" formControlName="CancellationRate" label="Apply Cancellation charge?" binary="true"></p-checkbox>
+                </div>
+            </div>
+        </div>
+
+        
+    </form>
+    <p-footer>
+            <button type="button" class="ui-button-info" *ngIf="EventStatus" pButton icon="fa-check" [disabled]="!(evFormOptions.valid)" label="Save" (click)="onAddEventParameterOptions(evFormOptions.value)"></button>
+            <button type="button" class="ui-button-info" pButton icon="fa-close" (click)="cancelOptions();" label="Cancel"></button>
+     </p-footer>
+</p-dialog>
+
+<!--Add new Tab-->
+<!--<button class="ui-button-info" icon="fa-plus" pButton (click)="onAddNewTab()"></button><br><br>-->
+
+<p-tabView (onChange)="onTabChange($event)">
+    
+    <p-tabPanel header="Tab 0">
+        <div class="left">
+       <button class="ui-button-info"  *ngIf="EventStatus" icon="fa-plus" pButton label="Add Event Parameter" (click)="openEventParamsPopUp(0);"></button></div>
+
+
+        <ag-grid-angular
+                    style="width: 100%;height:400px;"
+                    class="ag-theme-material"
+                    [gridOptions]="gridOptions0"
+                    [isFullWidthCell]="isFullWidthCell"
+                    [getRowHeight]="getRowHeight"
+                    [getNodeChildDetails]="getNodeChildDetails"
+                    [fullWidthCellRendererFramework]="getFullWidthCellRenderer()"
+                    enableSorting
+                    enableColResize
+                    rowHeight="50">
+        </ag-grid-angular>
+    </p-tabPanel>
+
+    <p-tabPanel header="Tab 1">
+        <div class="left">
+       <button class="ui-button-info" *ngIf="EventStatus" icon="fa-plus" pButton label="Add Event Parameter" (click)="openEventParamsPopUp(1);"></button>
+        </div>
+
+       <ag-grid-angular
+                    style="width: 100%; height: 400px;"
+                    class="ag-theme-material"
+                    [gridOptions]="gridOptions1"
+                    [isFullWidthCell]="isFullWidthCell"
+                    [getRowHeight]="getRowHeight"
+                    [getNodeChildDetails]="getNodeChildDetails"
+                    [fullWidthCellRendererFramework]="getFullWidthCellRenderer()"
+
+                    enableSorting
+                    enableColResize
+                    rowHeight="50">
+        </ag-grid-angular>
+    </p-tabPanel>
+
+    <p-tabPanel header="Tab 2">
+        <div class="left">
+       <button class="ui-button-info" *ngIf="EventStatus" icon="fa-plus" pButton label="Add Event Parameter" (click)="openEventParamsPopUp(2);"></button>
+        </div>
+
+       <ag-grid-angular
+                    style="width: 100%; height: 400px;"
+                    class="ag-theme-material"
+                    [gridOptions]="gridOptions2"
+                    [isFullWidthCell]="isFullWidthCell"
+                    [getRowHeight]="getRowHeight"
+                    [getNodeChildDetails]="getNodeChildDetails"
+                    [fullWidthCellRendererFramework]="getFullWidthCellRenderer()"
+
+                    enableSorting
+                    enableColResize
+                    rowHeight="50">
+        </ag-grid-angular>
+    </p-tabPanel>
+
+    <p-tabPanel header="Tab 3">
+        <div class="left">
+       <button class="ui-button-info" *ngIf="EventStatus" icon="fa-plus" pButton label="Add Event Parameter" (click)="openEventParamsPopUp(3);"></button>
+       </div>
+
+       <ag-grid-angular
+                    style="width: 100%; height: 400px;"
+                    class="ag-theme-material"
+                    [gridOptions]="gridOptions3"
+                    [isFullWidthCell]="isFullWidthCell"
+                    [getRowHeight]="getRowHeight"
+                    [getNodeChildDetails]="getNodeChildDetails"
+                    [fullWidthCellRendererFramework]="getFullWidthCellRenderer()"
+
+                    enableSorting
+                    enableColResize
+                    rowHeight="50">
+        </ag-grid-angular>
+    </p-tabPanel>
+
+    <p-tabPanel header="Tab 4">
+        <div class="left">
+       <button class="ui-button-info" *ngIf="EventStatus" icon="fa-plus" pButton label="Add Event Parameter" (click)="openEventParamsPopUp(4);"></button>
+       </div>
+
+       <ag-grid-angular
+                    style="width: 100%; height: 400px;"
+                    class="ag-theme-material"
+                    [gridOptions]="gridOptions4"
+                    [isFullWidthCell]="isFullWidthCell"
+                    [getRowHeight]="getRowHeight"
+                    [getNodeChildDetails]="getNodeChildDetails"
+                    [fullWidthCellRendererFramework]="getFullWidthCellRenderer()"
+
+                    enableSorting
+                    enableColResize
+                    rowHeight="50">
+        </ag-grid-angular>
+    </p-tabPanel>
+
+</p-tabView>
+
+<!--<button class="ui-button-info" icon="fa-plus" pButton label="Add Event Parameter" (click)="openEventParamsPopUp();"></button>
+<ag-grid-angular #agGrid
+            style="width: 100%; height: 800px;"
+            class="ag-theme-material"
+            [gridOptions]="gridOptions"
+            [isFullWidthCell]="isFullWidthCell"
+            [getRowHeight]="getRowHeight"
+            [getNodeChildDetails]="getNodeChildDetails"
+            [fullWidthCellRendererFramework]="getFullWidthCellRenderer()"
+            showToolPanel=false
+            enableSorting
+            enableColResize
+            rowHeight="50">
+</ag-grid-angular>-->
+
+<!--<p appAddTab>Highlight me!</p>-->
+<!--[selected]="true"-->
+</div>
+</section>

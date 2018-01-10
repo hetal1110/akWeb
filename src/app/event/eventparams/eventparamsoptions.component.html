@@ -1,0 +1,22 @@
+<!--Message-->
+<p-growl [value]="msgs"></p-growl>
+
+<!--ag-grid-->
+<div class="full-width-panel">
+    <ag-grid-angular #agDetailGrid
+                 class="full-width-grid"
+                 [gridOptions]="gridOptions"
+
+                 enableSorting
+                 enableFilter
+                 enableColResize
+
+                 (mousewheel)="consumeMouseWheelOnDetailGrid($event)"
+                 (DOMMouseScroll)="consumeMouseWheelOnDetailGrid($event)"
+                 rowHeight="50">
+
+    </ag-grid-angular>
+    <div class="full-width-grid-toolbar">
+        <button class="ui-button-info" icon="fa-plus" pButton *ngIf="EventStatus" label="Add Parameter Option" (click)="addOption(parentId);"></button>
+    </div>
+</div>

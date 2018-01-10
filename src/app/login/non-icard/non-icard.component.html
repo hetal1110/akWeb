@@ -1,0 +1,184 @@
+
+<div _ngcontent-c2="" class="login-logo">
+
+<p-growl [(value)]="msgs"></p-growl>
+	<div><img src="assets/Images/login-logo.png" width="300" height="169" /></div>
+<div class="container">
+   <form class="login-form-non-icard" [formGroup]="nonIcardForm" (ngSubmit)="onSubmit(nonIcardForm.value)">
+        <div formGroupName="nonIcardData">
+          <h2>Non Icard Form</h2>
+          <div class="row">
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group">
+          <input type="text" id="FName" class="form-control" formControlName="FName" placeholder="First Name" pInputText>
+          <span *ngIf="!nonIcardForm.get('nonIcardData.FName').valid && nonIcardForm.get('nonIcardData.FName').touched" class="help-block">
+            <span *ngIf="nonIcardForm.get('nonIcardData.FName').errors['required']">
+              Please fill out this field
+            </span>                                          
+          </span>            
+          </div>
+          </div>
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group">
+          <input type="text" id="MName" class="form-control" formControlName="MName" placeholder="Middle Name">
+          <span *ngIf="!nonIcardForm.get('nonIcardData.MName').valid && nonIcardForm.get('nonIcardData.MName').touched" class="help-block">
+            <span *ngIf="nonIcardForm.get('nonIcardData.MName').errors['required']">
+              Please fill out this field
+            </span>                                                                 
+          </span>            
+          </div>
+          </div>
+         
+          
+            <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+            <div class="form-group">
+          <input type="text" id="LName" class="form-control" formControlName="LName" placeholder="Last Name">
+          <span *ngIf="!nonIcardForm.get('nonIcardData.LName').valid && nonIcardForm.get('nonIcardData.LName').touched" class="help-block">
+            <span *ngIf="nonIcardForm.get('nonIcardData.LName').errors['required']">
+              Please fill out this field
+            </span>                                                                 
+          </span>            
+          </div>
+          </div>
+          </div>
+         <div class="row">
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group">
+          <input type="text" id="MobileNo" class="form-control" formControlName="MobileNo" placeholder="Mobile Number">
+          <span *ngIf="!nonIcardForm.get('nonIcardData.MobileNo').valid && nonIcardForm.get('nonIcardData.MobileNo').touched" class="help-block">
+            <span *ngIf="nonIcardForm.get('nonIcardData.MobileNo').errors['required']">
+              Please fill out this field
+            </span> 
+            <span *ngIf="!nonIcardForm.get('nonIcardData.MobileNo').errors['required'] && nonIcardForm.get('nonIcardData.MobileNo').errors['pattern']">
+              Please enter valid Mobile No
+            </span>                                                                 
+          </span>            
+          </div>
+          </div>
+        
+          
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group">
+          <input type="text" id="EmailId" class="form-control" formControlName="EmailId" placeholder="Email Id">
+          <span *ngIf="!nonIcardForm.get('nonIcardData.EmailId').valid && nonIcardForm.get('nonIcardData.EmailId').touched" class="help-block">
+            <span *ngIf="nonIcardForm.get('nonIcardData.EmailId').errors['required']">
+              Please fill out this field
+            </span>
+            <span *ngIf="!nonIcardForm.get('nonIcardData.EmailId').errors['required'] && nonIcardForm.get('nonIcardData.EmailId').errors['email']">
+              Please enter valid Email Address
+            </span>                                                                 
+          </span>            
+          </div>
+          </div>
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group">
+          <input type="text" id="DateOfBirth" class="form-control" formControlName="DateOfBirth" placeholder="Year of Birth - YYYY">
+          <span *ngIf="!nonIcardForm.get('nonIcardData.DateOfBirth').valid && nonIcardForm.get('nonIcardData.DateOfBirth').touched" class="help-block">
+            <span *ngIf="nonIcardForm.get('nonIcardData.DateOfBirth').errors['required']">
+              Please fill out this field
+            </span>   
+            <span *ngIf="!nonIcardForm.get('nonIcardData.DateOfBirth').errors['required'] && nonIcardForm.get('nonIcardData.DateOfBirth').errors['pattern']">
+              Please enter Year of Birth in YYYY format
+            </span>                                                              
+          </span>            
+          </div>
+          </div>
+         </div>
+          <div class="row">
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group otp-select ">
+          <p-dropdown [options]="genders" formControlName="Gender" [style]="{'width':'250px'}" [required]="true" placeholder="--Select Gender--"></p-dropdown>
+          <span *ngIf="!nonIcardForm.get('nonIcardData.Gender').valid && nonIcardForm.get('nonIcardData.Gender').touched" class="help-block">
+            <span *ngIf="nonIcardForm.get('nonIcardData.Gender').errors['required']">
+              Please fill out this field
+            </span>  
+            <span *ngIf="nonIcardForm.get('nonIcardData.Gender').errors['pattern']">
+              Please fill out this field
+            </span>                                                                 
+                                                                    
+          </span>            
+          </div>
+          </div>
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group otp-select ">
+            <p-dropdown [options]="countryData" formControlName="country" [filter]="true" filterBy="label" (onChange)="onCountrySelected($event)" [style]="{'width':'250px'}" [required]="true" placeholder="--Select Country--" filterPlaceholder="--Select Country--"></p-dropdown>
+            <span *ngIf="(!nonIcardForm.get('nonIcardData.country').valid) && nonIcardForm.get('nonIcardData.country').touched" class="help-block">
+              <span *ngIf="nonIcardForm.get('nonIcardData.country').errors['required']">
+                Please fill out this field
+              </span>
+            </span>
+          </div>
+          </div>
+          
+          
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group otp-select ">
+            <p-dropdown [options]="stateData" formControlName="state" [filter]="true" filterBy="label" (onChange)="onStateSelected($event)" [style]="{'width':'250px'}" [required]="true" placeholder="--Select State--" filterPlaceholder="--Select State--"></p-dropdown>
+            <span *ngIf="(!nonIcardForm.get('nonIcardData.state').valid) && nonIcardForm.get('nonIcardData.state').touched" class="help-block">
+              <span *ngIf="nonIcardForm.get('nonIcardData.state').errors['required']">
+                Please fill out this field
+              </span>
+            </span>
+          </div>
+          </div>
+          </div>
+           <div class="row">
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group otp-select">
+            <p-dropdown [options]="cityData" formControlName="CityId" [filter]="true" filterBy="label" (onChange)="onCitySelected($event)" [style]="{'width':'250px'}" [required]="true" placeholder="--Select City--" filterPlaceholder="--Select City--"></p-dropdown>
+            <span *ngIf="(!nonIcardForm.get('nonIcardData.CityId').valid) && nonIcardForm.get('nonIcardData.CityId').touched" class="help-block">
+              <span *ngIf="nonIcardForm.get('nonIcardData.CityId').errors['required']">
+                Please fill out this field
+              </span>
+            </span>
+          </div>
+          </div>
+         
+         
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group otp-select">
+            <p-dropdown [options]="centerData" formControlName="CenterId" [filter]="true" filterBy="label" (onChange)="onCenterSelected($event)" [style]="{'width':'250px'}" [required]="true" placeholder="--Select Center--" filterPlaceholder="--Select Center--"></p-dropdown>
+            <span *ngIf="(!nonIcardForm.get('nonIcardData.CenterId').valid) && nonIcardForm.get('nonIcardData.CenterId').touched" class="help-block">
+              <span *ngIf="nonIcardForm.get('nonIcardData.CenterId').errors['required']">
+                Please fill out this field
+              </span>
+            </span>
+          </div>
+          </div>
+          <div class="col-lg-4 col-md-10 col-sm-12 col-xs-12">
+          <div class="form-group otp-select">
+            <p-dropdown [options]="subCenterData" formControlName="SubCenterId" [filter]="true" filterBy="label" [style]="{'width':'250px'}" [required]="true" placeholder="--Select SubCenter--" filterPlaceholder="--Select SubCenter--"></p-dropdown>
+            <span *ngIf="(!nonIcardForm.get('nonIcardData.SubCenterId').valid) && nonIcardForm.get('nonIcardData.SubCenterId').touched" class="help-block">
+              <span *ngIf="nonIcardForm.get('nonIcardData.SubCenterId').errors['required']">
+                Please fill out this field
+              </span>
+            </span>
+          </div>
+          </div>
+           </div>
+          
+          
+               <div class="col-lg-12 text-center">     
+              <button class="btn btn-primary" type="submit" [disabled]="!nonIcardForm.valid">Get OTP</button>
+          </div>
+        </div>
+  </form>
+</div>   
+</div>  
+<p-dialog header="Login Confirmation" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [width]="650" [height]="300" [closable]="true" [contentStyle]="{'overflow':'visible'}">
+
+{{ modalMsg }} <br>
+
+<p-footer>
+  <div class="row">
+    <div class="col-xs-12">     
+
+      <button pButton type="button" icon="fa-close" label="Cancel" (click)="onCancel()"></button>
+
+       <button pButton type="button" icon="fa-close" label="Login with {{ tempicard }}" (click)="gotoLogin()"></button>
+
+      <button pButton type="button" icon="fa-close" label="Create New" (click)="createNew(nonIcardForm.value)"></button>
+    </div>
+  </div>
+</p-footer>
+</p-dialog>

@@ -1,0 +1,129 @@
+<section class="box">
+<header class="p_headercenter">
+    <h2 class="title pull-left">Update ICard</h2>
+</header>
+
+<!--Message-->
+<p-growl [(value)]="msgs"></p-growl>
+
+<div class="content-body">
+  <form [formGroup]="evForm">
+    <div class="row">
+      <!--ICard-->
+      <div class="col-lg-3 col-sm-5 col-xs-12">
+        <div class="form-group">
+          <label for="ICard">ICard</label>
+          <input type="text" class="form-control" formControlName="icard">
+        </div>
+      </div>
+      <!--First Name-->
+      <div class="col-lg-3 col-sm-5 col-xs-12">
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input type="text" class="form-control" formControlName="fname">
+        </div>
+      </div>
+      <!--Middle Name-->
+      <div class="col-lg-3 col-sm-5 col-xs-12">
+        <div class="form-group">
+          <label for="mname">Middle Name</label>
+          <input type="text" class="form-control" formControlName="mname">
+        </div>
+      </div>
+      <!--Last Name-->
+      <div class="col-lg-3 col-sm-5 col-xs-12">
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input type="text" class="form-control" formControlName="lname">
+        </div>
+      </div>
+    </div>
+     <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <button class="btn btn-primary" label="Search" (click)="onSearch(evForm.value)" [disabled]="(evForm.controls['icard'].invalid && evForm.controls['fname'].invalid && evForm.controls['mname'].invalid && evForm.controls['lname'].invalid)">Search</button>
+        </div>
+      </div>
+    </div>
+
+    <!--ag-grid-angula-->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+          <ag-grid-angular style="width: 100%; height: 300px;"
+                    class="ag-theme-material"
+                    [gridOptions]="gridOptions"
+                    enableSorting 
+                    enableFilter 
+                    enableColResize
+                    pagination
+                    showToolPanel=false
+                    paginationPageSize="10"
+                    rowHeight="50"
+                    (selectionChanged)='onSelectionChanged($event)'>
+            </ag-grid-angular>  
+        </div>
+      </div>
+    </div>
+    
+    <!--Mobile/Email section-->
+    <div class="row">
+      <!--Mobile-->
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label for="mobile">Mobile</label>
+          <input type="text" class="form-control" formControlName="oldmobile">
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+         <label>&nbsp;&nbsp;</label>
+         <input type="text" class="form-control" formControlName="mobile" placeholder="New Mobile (10 digits)">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!--email-->
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label for="email">Email</label>
+           <input type="text" class="form-control" formControlName="oldemail">
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label>&nbsp;&nbsp;</label>
+          <input type="text" class="form-control" formControlName="email" placeholder="New Email">
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <!--Sub Center -->
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label for="email">Sub Center</label>
+           <input type="text" class="form-control" formControlName="oldsubcenter">
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+        <div class="form-group">
+          <label>&nbsp;&nbsp;</label>
+          <p-autoComplete formControlName="subcenter" [suggestions]="arrSubCenter" (completeMethod)="fetchSubCenter($event)" field="name" [size]="50" [minLength]="3" placeholder="Type text to search Sub Center (min 3 chars)" ></p-autoComplete>
+        </div>
+      </div>
+    </div>
+
+    <!--Update ICard-->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="form-group">
+           <button class="btn btn-primary" label="Update ICard" (click)="onSubmitUpdateICard(evForm.value)"
+           [disabled]="evForm.controls['mobile'].invalid && evForm.controls['email'].invalid && isObject(evForm.controls['subcenter'])"
+           >Update ICard</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</div>
+</section>

@@ -1,0 +1,50 @@
+<section class="box">
+<header class="p_headercenter">
+    <h2 class="title pull-left">Reports</h2>
+</header>
+<div class="content-body">
+  <p-growl [(value)]="msgs"></p-growl>
+
+
+  <div class="right">
+     <button class="ui-button-info" icon="fa-download" pButton label="Export" (click)="onExport()"></button>
+  </div>
+
+
+    <div class="row">
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">       
+        <div class="form-group">
+          <label class="form-label" for="event">Event</label>
+          <p-dropdown [options]="events" name="event" (onChange)="onEventChange($event)" [style]="{'width':'250px'}" placeholder="--Select Event--">
+          </p-dropdown>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+         <div class="form-group">
+          <label class="form-label" for="event">Report</label>
+          <p-dropdown [options]="reports" name="report" (onChange)="onReportChange($event)" [style]="{'width':'250px'}" placeholder="--Select Report--">
+          </p-dropdown>
+        </div>
+      </div>
+       <!--loader-->
+        <div id="preloader" *ngIf="showLoader" style="min-height:600px;">
+          <div id="status"></div>
+        </div>
+        <!--loader end-->   
+    </div>
+    <div class="content-body">
+    <div class="row" *ngIf="showGrid">   
+        <ag-grid-angular style="width: 100%; height: 500px;" 
+                  class="ag-theme-material"
+                  [gridOptions] ="gridOptions"                     
+                  enableColResize
+                  enableFilter
+                  enableSorting
+                  rowHeight="50"
+                 (gridReady)="onReady($event)">
+        </ag-grid-angular>
+       
+    </div>
+</div>
+</div>
+</section>

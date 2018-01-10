@@ -1,0 +1,167 @@
+
+<!-- progressbar -->
+<app-progressbar></app-progressbar>
+
+<section class="box">
+<div class="btn-position">
+    <button class="ui-back" alt="back" title="back" icon="fa-arrow-left" pButton  (click)="redirecTo()"></button>
+</div>
+<!--Event Header-->
+<header class="p_headercenter">
+   <h2 class="title pull-left">Event Co-ordinators : {{eventName}}</h2>
+</header>
+<div class="content-body">
+
+<!--Message-->
+<p-growl [(value)]="msgs"></p-growl>
+
+
+
+<!-- Add Coordinator -->
+<div class="left">
+<button class="ui-button-info" icon="fa-plus" pButton label="Add Coordinator" (click)="display=true"></button>
+<button class="ui-button-info" icon="fa-copy" pButton label="Copy from Previous Event" (click)="openCopyOverlay()"></button>
+</div>
+
+<div class="right">
+<button class="ui-button-info" icon="fa-download" pButton label="Export" (click)="onExport()"></button>
+<button class="ui-button-info" icon="fa-download" pButton label="Download" (click)="download()"></button>
+<button class="fileUpload ui-button-info" icon="fa-upload" pButton label="Upload">  
+<input name="file"  type="file" onclick="this.value = null" (change)="uploadData($event)" class="upload"/>
+</button>
+
+</div>
+
+<!--Back-->
+
+<!--confirm Dialog-->
+<p-confirmDialog header="Confirmation" icon="fa fa-question-circle" width="425"></p-confirmDialog>
+
+<!--Overlay Form-->
+<p-dialog header="Add Co-ordinator" [(visible)]="display" [closable]="true" modal="modal" [width]="500" [responsive]="true" [contentStyle]="{'overflow':'visible'}">
+                  
+    <form [formGroup]="form" name="form">
+        
+        <div class="row">
+            <!--Event Name-->
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="IdCard">ID Card</label><span class="mandatory">*</span>
+                    <input type="text" (blur)="getMemberInfo(form.value)" (keyup.enter)="getMemberInfo
+(form.value)" class="form-control" formControlName="IdCard">
+<span class="help-block" *ngIf="!form.controls['IdCard'].valid && form.controls['IdCard'].touched" >Please fill out this field</span>
+                </div>
+                <input type="hidden" formControlName="EventId" name="EventId" value="{{EventId}}">
+                <input type="hidden" formControlName="ClientIPAddress" name="ClientIPAddress" value="1">
+            </div>
+        </div>
+        <div class="row" *ngIf=isIcardExists>
+            <!--Person Info-->
+            <div class="col-xs-12">
+                <div class="form-group">
+                    {{personInfo.name}} <br />
+                    Mobile : {{personInfo.mobile}} <br />
+                    Center : {{personInfo.Center}}
+                </div>
+            </div>
+        </div>
+         <div class="row">
+            <!-- Is Money Co-Ordinator? -->
+            <div class="col-lg-7 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <p-checkbox formControlName="IsMoneyCo" label="Is Money Co-Ordinator?" binary="true"></p-checkbox>
+                </div>
+            </div>
+        </div>
+        
+    </form>
+    <p-footer>
+            <button type="button" class="ui-button-info" pButton icon="fa-check" (click)="onAddEventMoneyCo(form.value)" [disabled]="!(form.valid && isIcardExists)" label="Save"></button>
+            <button type="button" class="ui-button-info" pButton icon="fa-close" (click)="reset();initializeForm();" label="Cancel"></button>
+    </p-footer>
+</p-dialog>
+
+<!--Loader-->
+<div id="preloader" *ngIf="showLoader">
+    <div id="status"></div>
+ </div>
+ 
+<!--OverlayCopy from Previous Event Form-->
+<p-dialog header="Copy Co-ordinator from Previous Event" [(visible)]="displayCopy" [closable]="true" modal="modal" [width]="900" [responsive]="true" [contentStyle]="{'overflow':'visible'}">
+
+    <form [formGroup]="cpform" name="cpform">
+        
+        <div class="row">
+            <!--Event Name-->
+            <div class="col-lg-5 col-md-10 col-sm-12 col-xs-12">
+                <div class="form-group">
+                    <label class="form-label" for="event">Select Event </label><span class="mandatory">*</span><br/>
+                    <p-dropdown (onChange)="getSelectedEventCoOrd(cpform.value)" [options]="eventList" formControlName="event" filterPlaceholder="Select Event" filter="filter"  class="dropdown"></p-dropdown>
+                    <span class="help-block" *ngIf="(!cpform.controls['event'].valid && cpform.controls['event'].touched) || (cpform.controls['event'].touched && cpform.controls['event'].value.id == 'none')">Please fill out this field</span>
+                 </div>
+                
+            </div>
+        </div>
+        <div class="row" *ngIf=showCoOrd>
+            <!--Person Info-->
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <!--Copy Event Co-Ordinator Grid-->
+                    <ag-grid-angular style="width: 100%; height: 500px;"
+                                    class="ag-theme-material"
+                                    [rowData]="rowData"
+                                    [columnDefs]="columnDefs"
+                                    [gridOptions]="cpygridOptions"
+                                    rowSelection="multiple"
+                                    enableSorting 
+                                    enableFilter 
+                                    enableColResize
+                                    pagination
+                                    paginationPageSize="10"
+                                    rowHeight="50">
+                    </ag-grid-angular>
+                </div>
+            </div>
+        </div>   
+    </form>
+    <p-footer>
+            <button *ngIf=showCoOrd type="button" class="ui-button-info" pButton icon="fa-check" [disabled]="(cpform.invalid || cpform.controls['event'].value.id == 'none')" label="Save" (click)="toCopyEventMoneyCo();"></button>
+            <button type="button" class="ui-button-info" pButton icon="fa-close" (click)="displayCopy=false;showCoOrd=false;initializeForm();" label="Cancel"></button>
+    </p-footer>
+</p-dialog>
+
+<!--Import Grid-->
+<div class="import-data">
+    <h3 *ngIf="showImportGrid"><b>Import Data</b></h3>
+</div>
+<ag-grid-angular *ngIf="showImportGrid" style="width: 100%; height: 300px;"
+                 class="ag-theme-material"
+                 [columnDefs]="columnImportDefs"
+                 [gridOptions]="gridImportOptions"
+                 enableSorting 
+                 enableFilter 
+                 enableColResize
+                 rowHeight="50">
+</ag-grid-angular>
+
+<div class="btn-position" *ngIf="showImportGrid" style="margin-bottom:50px;">
+    <button type="button" class="ui-button-info" pButton icon="fa-check" (click)="uploadDB()" [disabled]="saveDisabled" label="Save"></button>
+    <button type="button" class="ui-button-info" pButton icon="fa-close" (click)="cancelUpload();" label="Cancel"></button>
+</div>
+<br><br>
+
+<!--Grid-->
+<ag-grid-angular style="width: 100%; height: 650px;"
+                 class="ag-theme-material"
+                 [gridOptions]="gridOptions"
+                 enableCellChangeFlash
+                 enableSorting 
+                 enableFilter 
+                 enableColResize
+                 pagination
+                 paginationPageSize="10"
+                 rowHeight="50">
+</ag-grid-angular>
+</div>
+</section>
+

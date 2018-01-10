@@ -1,0 +1,39 @@
+<!--<p-growl [(value)]="msgs"></p-growl>
+<div class="row pie-charts" *ngFor="let ev of events">
+    <h3 class="with-line">{{ ev.name }} | {{ ev.UserRoleName}}</h3>
+    <div class="pie-chart-item-container" *ngFor="let chart of ev.charts">
+        <div ba-panel>
+            <div class="pie-chart-item">
+                <div class="description">
+                    <div>{{ chart.description }}</div>
+                    <div class="description-stats">{{ chart.stats }}</div>
+                </div>
+                <i class="chart-icon i-{{ chart.icon }}"></i>
+            </div>
+        </div>
+    </div>
+</div>-->
+<div id="preloader" *ngIf="showLoader" style="min-height:700px;">
+    <div id="status"></div>
+ </div>
+
+<section class="box nobox margin-top-15 margin-bottom-0" ng-show="events.length">
+        <div class="content-body" *ngFor="let ev of events">
+            <h3 class="attendance_title with-line">{{ ev.name }} | {{ ev.UserRoleName}}</h3>
+            <div class="col-md-12 col-sm-12 col-xs-12 padding-right-30 padding-left-20">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12 padding-right-0 padding-left-0" *ngFor="let chart of ev.charts">
+                    <div class="r4_counter wid-stats db_box">
+                        <div class="stats-data">
+                            <i class="fa fa-user-o icon-primary pull-left"></i>
+                            <i class="fa fa-user-o icon-primary pull-left"style="font-size: 15px;margin-left: -8px;" ></i>
+                            <div class="stats">
+                                <h3>{{ chart.stats }}</h3>
+                                <span>{{ chart.description }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>

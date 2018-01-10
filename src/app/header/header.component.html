@@ -1,0 +1,112 @@
+<!--<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a href="javascript:;" class="navbar-brand">AKonnect</a>
+    </div>
+
+    <div class="collapse navbar-collapse" *ngIf="MemberId">
+      <ul class="nav navbar-nav" *ngFor="let item of Menu">
+        <!--Item Menu
+        <li><a routerLink="{{item.url}}" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">{{item.title}}</a></li>
+      </ul>
+      <ul class="nav navbar-nav">
+
+        <!--Event Menu
+        <li>
+          <a href="javascript:;">Event</a>
+          <ul class="wraplist wraplist-sub sub-menu" *ngFor="let item of Event">
+            <li><a routerLink="{{item.url}}" [routerLinkActiveOptions]="{exact: true}" routerLinkActive="active">{{item.title}}</a></li>
+          </ul>
+        </li>
+        <li><a (click)="onLogout()">LogOut</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>-->
+
+  
+  <div class="p-topbar" *ngIf="MemberId">
+     
+      <div class="logo-area">Akonnect Web</div>
+      <div class="quick-area">
+        <div class="pull-left slantit">
+            <ul class="info-menu left-links list-inline list-unstyled">
+              <li class="sidebar-toggle-wrap">
+                <a href="javascript:void(0)" data-toggle="sidebar" class="sidebar_toggle" (click)="toggleMenu()">
+                <i class="fa fa-bars"></i></a>
+              </li>
+            </ul> 
+        </div>
+        <div class="pull-left pagetitle">
+          <div class="slant"></div>
+        </div>
+        <div class="pull-right quickright">
+                    <ul class="list-inline"> 
+                        
+                        <li class="login">
+                           <!-- <i style= "cursor:pointer;" class="material-icons avtar-img" ng-click="SignOut = ! SignOut">person</i>-->
+                            <img src="assets/Images/signout.png" class="avtar-img" (click)="showlogOut = !showlogOut">
+                            <div class="drop" *ngIf="showlogOut">
+                                 <div class="gb_S"></div>
+                                     <ul>
+                                        <li class="signoutpassword">
+                                            <a  class="lognontext" (click)="onLogout()">Log Out</a>
+                                        </li>
+                                     </ul>
+                             </div>
+                        </li>
+                    </ul>
+                </div>
+    </div>
+  </div>
+ 
+      
+
+  <div class="page-container row-fluid" *ngIf="MemberId">
+    <!--<div class="p-sidebar expandit">-->
+    <div class="{{ SlideMenu === false ? 'p-sidebar expandit' : 'p-sidebar collapseit' }}">
+      <div class="p-sidebar-wrapper" id="main-menu-wrapper">
+        <div>
+            <nav class="sidebar-top">      
+
+               <ul class="wraplist wrapper-menu">
+                <!--Item Menu-->
+                <li  *ngFor="let item of Menu">
+                  <a routerLink="{{item.url}}" class="nosub">
+                    <i class="{{item.icon}}"></i>
+                    <span class="title">{{item.title}}</span></a>
+                </li>                
+                  
+
+                <li class="{{ EventActive == false ? 'auto': 'auto active' }}">
+                  <a href="javascript:void(0)" (click)="toggleSubMenu()">
+                    <i class="fa fa-user-circle"></i>
+                    <span class="title">Event</span>
+                    <span class="{{ EventActive == false ? 'arrow fa fa-fw fa-angle-right': 'arrow fa fa-fw fa-angle-down' }}"></span>
+                    
+                  </a>
+                  <ul class="wraplist wraplist-sub sub-menu" >
+                    <!--Item Menu-->
+                    <li *ngFor="let item of Event">
+                      <a routerLink="{{item.url}}">
+                      <span class="title">{{item.title}}</span></a>
+                     </li>
+              
+                     <li>
+                      <a href="http://akonnect.dadabhagwan.org/m/index.html">
+                      <span class="title">Register</span></a>
+                     </li>
+                  </ul>
+                </li>
+
+              
+
+              </ul>
+            </nav>
+        </div>
+    </div>  
+  </div> 
+  
+  </div>
+
+

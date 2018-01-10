@@ -1,0 +1,37 @@
+<div class="login-logo">
+
+
+
+
+        <div><img src="assets/Images/login-logo.png" width="300" height="169" /></div>
+        
+         <div class="login-form">
+
+            
+                <form [formGroup]="otpForm" (ngSubmit)="onSubmit()">
+                    <p-growl [(value)]="msgs" [life]="6000"></p-growl>
+                   <div formGroupName="otpData"> 
+                       <div class="otp-select">
+                    <div class="form-group">
+                        <input type="number" id="VerificationCode" formControlName="VerificationCode" class="form-control" placeholder="6 Digit OTP" ng-maxlength="6" required autofocus>
+                        <span *ngIf="!otpForm.get('otpData.VerificationCode').valid && otpForm.get('otpData.VerificationCode').touched" class="help-block">
+                        <span *ngIf="otpForm.get('otpData.VerificationCode').errors['required']">
+                            OTP is required!
+                        </span>
+                        <span *ngIf="otpForm.get('otpData.VerificationCode').errors['pattern']">
+                            6 digit OTP required!  
+                        </span>                                            
+                        </span>
+                    </div>
+                       </div>
+                     <div class="text-center">       
+                    <button class="btn btn-primary" type="submit" [disabled]="!otpForm.valid">
+                        Verify OTP</button></div>
+
+                   
+                    <br>
+                    <div class="text-center"><i>Enter the OTP sent on your registered <br>Mobile Number / Email Address</i></div>
+
+            <!--<div class="text-center"> <a ng-hide="(nic.formModel.HideResendCode)" ng-click="nic.ResendVerificationCode()"> <strong> Resend Code </strong></a>
+              </div>-->
+</div>

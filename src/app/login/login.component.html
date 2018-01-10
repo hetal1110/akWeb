@@ -1,0 +1,63 @@
+
+<div  class="login-logo">
+  <p-growl [(value)]="msgs"></p-growl>
+			<div><img src="assets/Images/login-logo.png" width="300" height="169" /></div>
+            
+			<div class="login-form">
+             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+                <div formGroupName="loginData">
+                 
+                  <div class="col-lg-12" style="padding:0;">
+                    <div class="form-group">
+                 <input id="IcardId" size="30" type="text" value="" placeholder="Linked I-Card Number" formControlName="IcardId" pInputText>
+                  <span *ngIf="!loginForm.get('loginData.IcardId').valid && loginForm.get('loginData.IcardId').touched" class="help-block-login">
+                      <span *ngIf="loginForm.get('loginData.IcardId').errors['required']">
+                        Icard Id is required!
+                      </span>
+                      <span *ngIf="loginForm.get('loginData.IcardId').errors['pattern']">
+                        Please Enter Valid Icard Id!  
+                      </span>                                            
+                    </span> 
+                    </div>
+                  </div>  
+                 
+               <div class="col-lg-12" style="padding: 0;"> 
+                 <div class="form-group"> 
+    		     <input type="text" id="EmMobile" placeholder="Mobile Number / Email Address" formControlName="EmMobile" pInputText />
+                  <span *ngIf="!loginForm.get('loginData.EmMobile').valid && loginForm.get('loginData.EmMobile').touched" class="help-block-login">
+                      <span *ngIf="loginForm.get('loginData.EmMobile').errors['required']">
+                        Mobile Number / Email Address is required!
+                      </span>                                                                 
+                    </span> 
+              </div>
+               </div>  
+               <div class="col-lg-12 text-center">     
+              <button class="btn btn-primary" type="submit" [disabled]="!loginForm.valid">Get OTP</button>  
+    		      <!--<button class="btn btn-primary">Login</button>-->
+              </div>
+              </div>
+            </form>
+           <div class="clear"></div>
+            <div class="text-center"> <a class="text-center"routerLink="/nonicard" id="non-icard"> <strong> I do not have ICard </strong></a>
+            </div>
+         
+            <div class="text-center"> <a class="text-center" href="http://akonnect.org/" id="reg-help" target="_blank"> <strong> I need help in registration </strong></a>
+              </div>
+           
+            
+            </div>
+             <div class="text-center">
+                <address>
+                    <strong>Dada Bhagwan Foundation</strong>
+                    <br> Trimandir, Adalaj
+                    <br> Gandhinagar, India, 382421
+                    <br> Phone : 079-39830100
+                </address>
+               </div>
+
+             
+		</div>
+   
+   
+
+   
