@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="no-js">
+<head>
+    <title>MHT Module</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images/favicon-96x96.png">
+    <link type="text/css" rel="stylesheet" href="Css/bootstrap.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600|Roboto+Condensed:300|Open+Sans:700,300,600,400" rel="stylesheet" type="text/css">
+    <link href="Css/Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Css/ag-grid.css">
+    <link href="Scripts/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />   
+    <link rel="stylesheet" href="Css/select2.css">
+    <style>
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+          display: none !important;
+        }
+    </style>
+   </head>
+
+<body ng-app="MBAApp" ng-controller="MBACtrl">
+    <div>
+        <!-- header --> 
+	    <div class="p-topbar">
+	        <!-- START TOPBAR -->
+	        <div class="logo-area"></div>
+	        <div class="quick-area">
+			    <div class="pull-left slantit">
+			        <ul class="info-menu left-links list-inline list-unstyled">
+				       <li class="sidebar-toggle-wrap">
+				          <a href="javascript:void(0)" data-toggle="sidebar" class="sidebar_toggle" ng-click="SlideMenu = ! SlideMenu">
+					        <i class="material-icons">menu</i></a>
+				       </li>
+			        </ul>
+			    </div>
+                <div class="pull-left pagetitle">
+                    <div class="slant"></div>
+   			    </div>
+                <div class="pull-right quickright">
+                    <ul class="list-inline" ng-cloak> 
+                        <li class="activity" ng-show="activityList.length >= 2">
+                            <ui-select ng-model="activityList.selected" name="activity" theme="bootstrap" ng-required="true" on-select="GetActivity($item);">
+                                <ui-select-match class="width:100px;" placeholder="Activity">{{$select.selected.lovdesc}}</ui-select-match>
+                                <ui-select-choices repeat="item in activityList | filter: $select.search">
+                                    <small ng-bind-html="item.lovdesc "></small>
+                                </ui-select-choices>
+                            </ui-select>
+                        </li>
+                        <li class="login">
+                           <!-- <i style= "cursor:pointer;" class="material-icons avtar-img" ng-click="SignOut = ! SignOut">person</i>-->
+                            <img src="Images/signout.png" class="avtar-img" ng-click="SignOut = !SignOut" />
+                            <div class="drop" ng-show="SignOut">
+                                 <div class="gb_S"></div>
+                                     <ol>
+                                        <li class="signoutpassword">
+                                            <a class="lognontext" style="cursor:pointer;" ng-click="ClearSessionVar()">Sign Out</a>
+                                        </li>
+                                     </ol>
+                             </div>
+                        </li>
+                    </ul>
+                </div>      
+            </div>
+        </div>
+        <!--END TOPBAR-->
+
+        <div id="preloader" style="display: block;" ng-show="user.showloader">
+                <div id="status" style="display: block;"></div>
+        </div>
+        
+        <!--START CONTAINER-->
+        <div class="page-container row-fluid" ng-init="user.showloader = true">
+        	<div ng-class="{ 'p-sidebar expandit': !SlideMenu,  'p-sidebar collapseit': SlideMenu}" ng-show="user.showMenu" ng-init="user.showMenu = false">
+        		<div class="p-sidebar-wrapper" id="main-menu-wrapper" style="height: 710px;" auto-active>
+            		<div>
+                        <!-- nav -->
+                        <nav class="sidebar-top"><!-- list -->
+
+						    <ul class="wraplist wrapper-menu" ng-cloak>
+    						    <li>
+        					        <a data-ui-sref="Dashboard" class="nosub">
+        						        <i class="material-icons">dashboard</i>
+       							        <span class="title">Dashboard</span>
+       						        </a>
+    					        </li>
+
+                                 <li class="auto" ng-class='{"active": active == $index+1 }' ng-repeat="(menu, submenu) in user.groups">
+                                    <a href="javascript:;" ng-click="makeActive($index+1)">
+        					            <i class="material-icons">{{menu.split(',')[1]}}</i>
+        					            <span class="title">{{ menu.split(',')[0] }} {{ s.ProgramName }}</span>
+        					            <span class="arrow material-icons">{{arrow[$index+1] ? "keyboard_arrow_down" : "keyboard_arrow_right"}}</span>
+        					        </a>
+                                    <ul class="wraplist wraplist-sub sub-menu">
+                                       <li data-ng-repeat="s in submenu"> <a data-ui-sref="{{ s.ProgramName }}">{{ s.SubMenu }}</a></li>
+                                    </ul>
+                                </li>
+                        </ul>
+	                </nav>
+                    <!-- nav -->
+    	   		</div>
+    		</div>  
+        </div>   
+	        <section id="main-content" ng-class="{ '': !SlideMenu,  'sidebar_shift': SlideMenu}">
+			    <section class="wrapper main-wrapper">
+                     <!--<div><img ng-src="Images/loader.gif" ng-show="user.showloader" /></div> -->
+                     <div class="content-wrapper" data-ui-view></div>
+        	        
+                </section>
+                <div class="footer" ng-show="!user.showloader">© {{date| date:'yyyy'}}  www.dadabhagwan.org</div>    
+            </section>
+        </div>
+        
+    </div>
+    
+    
+    <!--  Nessasary JS Files  -->
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/underscore.js"></script>
+    <script src="Scripts/angular-sanitize.js"></script>
+    <script src="Scripts/angular-ui-router.js"></script>
+
+    <!-- muliti-select files -->
+    <script src="Scripts/select.js"></script>
+    <!--<script src="Scripts/FileSaver.min.js"></script>-->
+    <!--<script src="https://angular-ui.github.io/ui-select/dist/select.js"></script>-->
+    
+    <!-- AG Grid Enterprise JS File   -->
+    <script src="Scripts/ag-grid-enterprise/ag-grid-enterprise.js"></script>
+
+    <!-- ocLazyLoad -->
+    <script src="Scripts/ocLazyLoad.js"></script>
+    <script src="App/Services/Permissions.js"></script>
+    <script src="App/Services/LovDataService.js"></script>
+    
+
+   <!-- Main  Route JS Filefor ALL Module Route-->
+    <script src="App/app.js"></script>
+
+</body>
+</html>
